@@ -1,5 +1,61 @@
+_menuPool = NativeUI.CreatePool()
+mainMenu = NativeUI.CreateMenu("Tornado Menu", "~b~Main Menu") -- menu name appears at top of menu
+_menuPool:Add(mainMenu)
+_menuPool:MouseControlsEnabled(false)
+_menuPool:ControlDisablingEnabled(false)
+isAdmin = false
+
+function AddMenuTornado(menu)
+    local submenu = _menuPool:AddSubMenu(menu, "Tornados")
+    for i = 1, 1 do
+    	local Item = NativeUI.CreateItem("Summon Tornado", "~o~Summons a ~r~Tornado in front of you!")
+		Item.Activated = function(ParentMenu, SelectedItem)
+    		--Do stuff
+    		TriggerEvent("tornado:spawn", -1, x,y,z, heading)
+    	end
+		local Item2 = NativeUI.CreateItem("Delete Tornado", "~y~Deletes the tornado! ~r~(All tornados)")
+		Item2.Activated = function(ParentMenu, SelectedItem)
+    		--Do stuff
+    		TriggerServerEvent("tornado:delete2")
+    	end
+		local Item3 = NativeUI.CreateItem("Exit", "")
+		Item3.Activated = function(ParentMenu, SelectedItem)
+    		--Do stuff
+    		ToggleMenu()
+    	end
+        submenu:AddItem(Item)
+		submenu:AddItem(Item2)
+		submenu:AddItem(Item3)
+		_menuPool:MouseControlsEnabled(false)
+		_menuPool:ControlDisablingEnabled(false)
+    end
+end
+
+AddMenuTornado(mainMenu)
+_menuPool:RefreshIndex()
+
+function ToggleMenu()
+	_menuPool:CloseAllMenus()
+end
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+        _menuPool:ProcessMenus()
+    end
+end)
+
+RegisterCommand('tm', function(source, args, rawCommand)
+	if isAdmin then
+		mainMenu:Visible(not mainMenu:Visible())
+		else
+TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, multiline = true, args = {"^1System", "Insufficient Permissions!"} })
+		end
+end)
 
 
+x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.1, 8.0, 1.0))
+heading = GetEntityHeading(PlayerPedId()+90, 1, 0)
 Citizen.CreateThread(function()
     local Script = MainScript:new()
     Script:MainScript()
@@ -7,32 +63,32 @@ Citizen.CreateThread(function()
     local Tornado = nil
 
 
-    RegisterNetEvent("gd_tornado:spawn")
-    AddEventHandler("gd_tornado:spawn", function(pos, dest)
-        pos = vec3(pos.x, pos.y, pos.z)
-        dest = vec3(dest.x, dest.y, dest.z)
+    RegisterNetEvent("tornado:spawn")
+    AddEventHandler("tornado:spawn", function(pos, dest)
+        pos = vec3(x,y,z)
+        dest = vec3(x,y,z)
         Tornado = Script._factory:CreateVortex(pos)
         Tornado._position = pos
         Tornado._destination = dest
         IsTornadoActive = true
     end)
 
-    RegisterNetEvent("gd_tornado:setPosition")
-    AddEventHandler("gd_tornado:setPosition", function(pos)
+    RegisterNetEvent("tornado:setPosition")
+    AddEventHandler("tornado:setPosition", function(pos)
         pos = vec3(pos.x, pos.y, pos.z)
         Tornado = Script._factory:CreateVortex(pos)
         Tornado._position = pos
     end)
 
-    RegisterNetEvent("gd_tornado:setDestination")
-    AddEventHandler("gd_tornado:setDestination", function(dest)
+    RegisterNetEvent("tornado:setDestination")
+    AddEventHandler("tornado:setDestination", function(dest)
         dest = vec3(dest.x, dest.y, dest.z)
         Tornado = Script._factory:CreateVortex(dest)
         Tornado._destination = dest
     end)
 
-    RegisterNetEvent("gd_tornado:delete")
-    AddEventHandler("gd_tornado:delete", function()
+    RegisterNetEvent("tornado:delete")
+    AddEventHandler("tornado:delete", function()
         IsTornadoActive = false
     end)
 
@@ -49,4 +105,9 @@ Citizen.CreateThread(function()
         Wait(15)
     end
 
+end)
+
+RegisterNetEvent("sendAcePermissionToClient")
+AddEventHandler("sendAcePermissionToClient", function(state)
+    isAdmin = state
 end)
