@@ -2,69 +2,98 @@ local IsTornadoActive = false
 local TornadoPosition = nil
 local TornadoDestination = nil
 local TornadoGirth = 8.0
+local ace_perm = "rhys19.tornado"
+local debug = false
 
-local PossiblePositions = {
-    {x = 2469.7680664063, y = -1261.8334960938, z = 18.676563262939},
-    {x = 1273.0069580078, y = -2649.7578125, z = 32.269676208496},
-    {x = -1293.2620849609, y = -1700.7102050781, z = 2.6835398674011},
-    {x = -3039.9089355469, y = 341.40008544922, z = 13.486105918884},
-    {x = -2102.1958007813, y = 2530.8842773438, z = 3.0150742530823},
-    {x = 85.679382324219, y = 7032.0244140625, z = 12.286052703857},
-    {x = 1954.2747802734, y = 5191.5024414063, z = 48.200130462646},
-    {x = 3705.4135742188, y = 4651.7333984375, z = 11.050972938538},
-}
-
-AddEventHandler("gd_tornado:summon", function()
-    local start = math.random(#PossiblePositions)
-    local destination = math.random(#PossiblePositions-1)
+AddEventHandler("tornado:summon", function()
+    local start = x,y,z
+    local destination = x,y,z
     if start==destination then
-        destination = #PossiblePositions
+        destination = x,y,z
     end
-    start = PossiblePositions[start]
-    destination = PossiblePositions[destination]
-    TornadoPosition = start
-    TornadoDestination = destination
+    TornadoPosition = x,y,z, heading
+    TornadoDestination = x,y,z, heading
     IsTornadoActive = true
-    TriggerClientEvent("gd_tornado:spawn", -1, start, destination)
-    print("[Tornado] A tornado has spawned at " .. start.x .. ", " .. start.y .. ", " .. start.z)
+    TriggerClientEvent("tornado:spawn", -1, x,y,z, heading)
+    print("[Tornado] A tornado has spawned at ", x,y,z, heading)
 end)
 
-AddEventHandler("gd_tornado:move_here", function(x,y,z)
-    x,y,z=tonumber(x),tonumber(y),tonumber(z)
+AddEventHandler("tornado:move_here", function(x,y,z)
     if x~=nil and y~=nil and z~=nil then
-        TornadoDestination = {x=x,y=y,z=z}
+        TornadoDestination = x,y,z, heading
         if not IsTornadoActive then
-            TornadoPosition = PossiblePositions[math.random(#PossiblePositions)]
+            TornadoPosition = x,y,z, heading
             print("[Tornado] A tornado has spawned at " .. TornadoPosition.x .. ", " .. TornadoPosition.y .. ", " .. TornadoPosition.z)
         end
         IsTornadoActive = true
-        TriggerClientEvent("gd_tornado:spawn", -1, TornadoPosition, TornadoDestination)
+        TriggerClientEvent("tornado:spawn", -1, TornadoPosition, TornadoDestination)
         print("[Tornado] A tornado is moving to " .. x .. ", " .. y .. ", " .. z)
     end
 end)
 
-AddEventHandler("gd_tornado:summon_right_here", function(x,y,z)
-    x,y,z=tonumber(x),tonumber(y),tonumber(z)
+AddEventHandler("tornado:summon_right_here", function(x,y,z)
+	  x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 8.0, 0.5))
     if x~=nil and y~=nil and z~=nil then
-        TornadoPosition = {x=x,y=y,z=z}
+        TornadoPosition = x,y,z, heading
         if not IsTornadoActive then
-            TornadoDestination = PossiblePositions[math.random(#PossiblePositions)]
+            TornadoDestination = x,y,z, heading
         end
         IsTornadoActive = true
-        TriggerClientEvent("gd_tornado:spawn", -1, TornadoPosition, TornadoDestination)
+        TriggerClientEvent("tornado:spawn", -1, x,y,z, heading)
         print("[Tornado] A tornado has spawned at " .. x .. ", " .. y .. ", " .. z)
+		
     end
 end)
 
-AddEventHandler("gd_tornado:dismiss", function()
-    IsTornadoActive = false
-    TriggerClientEvent("gd_tornado:delete", -1)
+function ProcessAces()
+    if GetNumPlayerIndices() > 0 then -- don't do it when there aren't any players
+        for i=0, GetNumPlayerIndices()-1 do -- loop through all players
+            player = tonumber(GetPlayerFromIndex(i))
+            Citizen.Wait(0)
+            if IsPlayerAceAllowed(player, ace_perm) then
+                TriggerClientEvent("sendAcePermissionToClient", player, true)
+                if debug then print("[DEBUG][" .. GetCurrentResourceName() .. "] ^5Syncronising player aces, sending to client...^0") end
+            end
+        end
+    end
+end
+
+Citizen.CreateThread(function()
+    while true do
+        ProcessAces()
+        Citizen.Wait(0) -- lets check every minute
+    end
 end)
 
-RegisterCommand("tornado_summon", function()
-    TriggerEvent("gd_tornado:summon")
-end, true)
+AddEventHandler("onResourceStart", function(name)
+    if name == GetCurrentResourceName() then
+        ProcessAces()
+        if debug then print("[DEBUG][" .. GetCurrentResourceName() .. "] ^6Resource [ " .. GetCurrentResourceName() .. " ] was (re)started, syncing aces to all players.^0") end
+    end
+end)
 
-RegisterCommand("tornado_dismiss", function()
-    TriggerEvent("gd_tornado:dismiss")
-end, true)
+RegisterServerEvent("tornado:delete2")
+AddEventHandler("tornado:delete2", function()
+    IsTornadoActive = false
+    TriggerClientEvent("tornado:delete", -1)
+end)
+
+AddEventHandler("tornado:delete", function()
+    IsTornadoActive = false
+    TriggerClientEvent("tornado:delete", -1)
+end)
+
+RegisterCommand("tornado", function(source, args, raw)
+	if (args[1] == "summon") then
+    TriggerEvent("tornado:summon")
+	elseif (args[1] == "delete") then
+	TriggerEvent("tornado:delete")
+	elseif #args < 1 then
+	return TriggerClientEvent('chat:addMessage', source, { color = { 255, 0, 0}, multiline = true, args = {"^1System", "Invalid Arguments!"} })
+	end
+end)
+
+RegisterNetEvent("sendAcePermissionToClient")
+AddEventHandler("sendAcePermissionToClient", function(state)
+    isAdmin = state
+end)
