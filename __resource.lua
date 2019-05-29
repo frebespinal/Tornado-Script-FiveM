@@ -5,6 +5,7 @@ client_scripts {
     'helpers/Helpers.lua',
     'helpers/LoopedParticle.lua',
     'helpers/MathEx.lua',
+    'Dependencies/NativeUI.lua',
 
     'tornado/TEntity.lua',
     'tornado/TFactory.lua',
