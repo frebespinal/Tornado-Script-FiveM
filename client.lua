@@ -1,17 +1,17 @@
-_menuPool = NativeUI.CreatePool()
-mainMenu = NativeUI.CreateMenu("Tornado Menu", "~b~Main Menu") -- menu name appears at top of menu
-_menuPool:Add(mainMenu)
-_menuPool:MouseControlsEnabled(false)
-_menuPool:ControlDisablingEnabled(false)
+--_menuPool = NativeUI.CreatePool()
+--mainMenu = NativeUI.CreateMenu("Tornado Menu", "~b~Main Menu") -- menu name appears at top of menu
+--_menuPool:Add(mainMenu)
+--_menuPool:MouseControlsEnabled(false)
+--_menuPool:ControlDisablingEnabled(false)
 isAdmin = false
-
+--[[
 function AddMenuTornado(menu)
     local submenu = _menuPool:AddSubMenu(menu, "Tornados")
     for i = 1, 1 do
     	local Item = NativeUI.CreateItem("Summon Tornado", "~o~Summons a ~r~Tornado in front of you!")
 		Item.Activated = function(ParentMenu, SelectedItem)
     		--Do stuff
-    		TriggerEvent("tornado:spawn", -1, x,y,z, heading)
+    		TriggerServerEvent("tornado:summon")
     	end
 		local Item2 = NativeUI.CreateItem("Delete Tornado", "~y~Deletes the tornado! ~r~(All tornados)")
 		Item2.Activated = function(ParentMenu, SelectedItem)
@@ -29,8 +29,8 @@ function AddMenuTornado(menu)
 		_menuPool:MouseControlsEnabled(false)
 		_menuPool:ControlDisablingEnabled(false)
     end
-end
-
+end--]]
+--[[
 AddMenuTornado(mainMenu)
 _menuPool:RefreshIndex()
 
@@ -43,14 +43,14 @@ Citizen.CreateThread(function()
         Citizen.Wait(0)
         _menuPool:ProcessMenus()
     end
-end)
+end)--]]
 
 RegisterCommand('tm', function(source, args, rawCommand)
-	if isAdmin then
-		mainMenu:Visible(not mainMenu:Visible())
-		else
-TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, multiline = true, args = {"^1System", "Insufficient Permissions!"} })
-		end
+	--if isAdmin then
+		--mainMenu:Visible(not mainMenu:Visible())
+	--	else
+TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, multiline = true, args = {"^1System", "Menu Version Disabled"} })
+	--	end
 end)
 
 
@@ -106,6 +106,16 @@ Citizen.CreateThread(function()
     end
 
 end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0) -- Wait 0 seconds to prevent crashing ;)
+    if IsTornadoActive == true then -- checks if the tornado is active
+        TriggerServerEvent('InteractSound_SV:PlayOnAll', 'tornado', 1.0) -- if tornado is active then play tornado siren.
+    end
+end)
+
+
 
 RegisterNetEvent("sendAcePermissionToClient")
 AddEventHandler("sendAcePermissionToClient", function(state)
