@@ -1,8 +1,3 @@
---_menuPool = NativeUI.CreatePool()
---mainMenu = NativeUI.CreateMenu("Tornado Menu", "~b~Main Menu") -- menu name appears at top of menu
---_menuPool:Add(mainMenu)
---_menuPool:MouseControlsEnabled(false)
---_menuPool:ControlDisablingEnabled(false)
 isAdmin = false
 
 x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.1, 8.0, 1.0))
