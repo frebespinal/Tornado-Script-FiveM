@@ -110,8 +110,9 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0) -- Wait 0 seconds to prevent crashing ;)
-    if IsTornadoActive == true then -- checks if the tornado is active
-        TriggerServerEvent('InteractSound_SV:PlayOnAll', 'tornado', 1.0) -- if tornado is active then play tornado siren.
+    	if IsTornadoActive == true then -- checks if the tornado is active
+			TriggerServerEvent('InteractSound_SV:PlayOnAll', 'tornado', 1.0) -- if tornado is active then play tornado siren.
+		end
     end
 end)
 
