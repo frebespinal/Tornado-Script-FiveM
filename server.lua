@@ -16,7 +16,7 @@ AddEventHandler("tornado:summon", function()
     TornadoDestination = x,y,z, heading
     IsTornadoActive = true
     TriggerClientEvent("tornado:spawn", -1, x,y,z, heading)
-    print("[Tornado] A tornado has spawned at ", x,y,z, heading)
+    print("[Tornado] A tornado has spawned ahead")
 end)
 
 AddEventHandler("tornado:move_here", function(x,y,z)
@@ -24,11 +24,11 @@ AddEventHandler("tornado:move_here", function(x,y,z)
         TornadoDestination = x,y,z, heading
         if not IsTornadoActive then
             TornadoPosition = x,y,z, heading
-            print("[Tornado] A tornado has spawned at " .. TornadoPosition.x .. ", " .. TornadoPosition.y .. ", " .. TornadoPosition.z)
+            --print("[Tornado] A tornado has spawned at " .. TornadoPosition.x .. ", " .. TornadoPosition.y .. ", " .. TornadoPosition.z)
         end
         IsTornadoActive = true
         TriggerClientEvent("tornado:spawn", -1, TornadoPosition, TornadoDestination)
-        print("[Tornado] A tornado is moving to " .. x .. ", " .. y .. ", " .. z)
+        --print("[Tornado] A tornado is moving to " .. x .. ", " .. y .. ", " .. z)
     end
 end)
 
@@ -41,7 +41,7 @@ AddEventHandler("tornado:summon_right_here", function(x,y,z)
         end
         IsTornadoActive = true
         TriggerClientEvent("tornado:spawn", -1, x,y,z, heading)
-        print("[Tornado] A tornado has spawned at " .. x .. ", " .. y .. ", " .. z)
+        --print("[Tornado] A tornado has spawned at " .. x .. ", " .. y .. ", " .. z)
 		
     end
 end)
@@ -61,12 +61,12 @@ function ProcessAces()
 	
 end
 
-Citizen.CreateThread(function()
+--[[Citizen.CreateThread(function()
     while true do
         ProcessAces()
         Citizen.Wait(0) -- lets check every minute
     end
-end)
+end)--]]
 AddEventHandler("onResourceStart", function(name)
     if name == GetCurrentResourceName() then
         ProcessAces()
