@@ -1,4 +1,9 @@
---[[
+_menuPool = NativeUI.CreatePool()
+mainMenu = NativeUI.CreateMenu("Tornado Menu", "~b~Main Menu") -- menu name appears at top of menu
+_menuPool:Add(mainMenu)
+_menuPool:MouseControlsEnabled(false)
+_menuPool:ControlDisablingEnabled(false)
+
 function AddMenuTornado(menu)
     local submenu = _menuPool:AddSubMenu(menu, "Tornados")
     for i = 1, 1 do
@@ -23,8 +28,8 @@ function AddMenuTornado(menu)
 		_menuPool:MouseControlsEnabled(false)
 		_menuPool:ControlDisablingEnabled(false)
     end
-end--]]
---[[
+end
+
 AddMenuTornado(mainMenu)
 _menuPool:RefreshIndex()
 
@@ -37,12 +42,17 @@ Citizen.CreateThread(function()
         Citizen.Wait(0)
         _menuPool:ProcessMenus()
     end
-end)--]]
+end)-
 
 RegisterCommand('tm', function(source, args, rawCommand)
-	--if isAdmin then
-		--mainMenu:Visible(not mainMenu:Visible())
-	--	else
+	if isAdmin then
+		mainMenu:Visible(not mainMenu:Visible())
+		else
 TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, multiline = true, args = {"^1System", "Menu Version Disabled"} })
-	--	end
+		end
+end)
+
+RegisterNetEvent("sendAcePermissionToClient")
+AddEventHandler("sendAcePermissionToClient", function(state)
+    isAdmin = state
 end)
