@@ -48,7 +48,7 @@ RegisterCommand('tm', function(source, args, rawCommand)
 	if isAdmin then
 		mainMenu:Visible(not mainMenu:Visible())
 		else
-TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, multiline = true, args = {"^1System", "Menu Version Disabled"} })
+TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, multiline = true, args = {"^1System", "Insufficient Permissions"} })
 		end
 end)
 
