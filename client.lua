@@ -13,7 +13,6 @@ Citizen.CreateThread(function()
     RegisterNetEvent("tornado:spawn")
     AddEventHandler("tornado:spawn", function(pos, dest)
         IsTornadoActive = true
-        print(IsTornadoActive)
         pos = vec3(x,y,z)
         dest = vec3(x,y,z)
         Tornado = Script._factory:CreateVortex(pos)
