@@ -20,6 +20,7 @@ PerformHttpRequest(versionurl, function(Error, NewestVersion, Header)
 		print('Newest Version: ' .. NewestVersion)
 		io.write("")
 		if CurrentVersion ~= NewestVersion and CurrentVersion < NewestVersion then
+		elseif CurrentVersion > NewestVersion then
 			print("Your version of " .. resourceName .. " seems to be higher than the current version.")
 			print('')
 			print('====================================================================')
