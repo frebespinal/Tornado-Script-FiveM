@@ -42,7 +42,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(0)
         _menuPool:ProcessMenus()
     end
-end)-
+end)
 
 RegisterCommand('tm', function(source, args, rawCommand)
 	if isAdmin then

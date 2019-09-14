@@ -13,24 +13,22 @@ PerformHttpRequest(versionurl, function(Error, NewestVersion, Header)
 		print('====================================================================')
 		print('Version Checker...')
 		print('')
-		print('Tornado Script ('..resourceName..')')
+		print('Tornado Script (' .. resourceName .. ')')
 		print('')
 		print('Changelog: \n' .. Changes)
 		print('Current Version: ' .. CurrentVersion)
 		print('Newest Version: ' .. NewestVersion)
 		io.write("")
-	if CurrentVersion ~= NewestVersion and CurrentVersion < NewestVersion then
+		if CurrentVersion ~= NewestVersion and CurrentVersion < NewestVersion then
 		elseif CurrentVersion > NewestVersion then
-		print("Your version of "..resourceName.." seems to be higher than the current version.")
-		print('')
+			print("Your version of " .. resourceName .. " seems to be higher than the current version.")
+			print('')
 			print('====================================================================')
 		else
 			print('===================')
 			print('=== Up to date! ===')
 			print('===================')
-
-		end
 		end
 		print('\n')
-end)
+	end)
 end)
