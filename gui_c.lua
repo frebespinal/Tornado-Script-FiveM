@@ -10,7 +10,7 @@ function AddMenuTornado(menu)
     	local Item = NativeUI.CreateItem("Summon Tornado", "~o~Summons a ~r~Tornado in front of you!")
 		Item.Activated = function(ParentMenu, SelectedItem)
     		--Do stuff
-    		TriggerServerEvent("tornado:summon")
+    		TriggerServerEvent("tornado:spawn", -1, x,y,z, heading)
     	end
 		local Item2 = NativeUI.CreateItem("Delete Tornado", "~y~Deletes the tornado! ~r~(All tornados)")
 		Item2.Activated = function(ParentMenu, SelectedItem)
