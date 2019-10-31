@@ -1,4 +1,3 @@
-isAdmin = false
 local IsTornadoActive = false
 
 x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.1, 8.0, 1.0))
@@ -59,14 +58,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(0) -- Wait 0 seconds to prevent crashing ;)
     	if IsTornadoActive then -- checks if the tornado is active
             TriggerEvent('LIFE_CL:Sound:PlayOnAll', 'demo', 1.0) -- if tornado is active then play tornado siren.
-            Citizen.Wait(1000)
+            Citizen.Wait(2500)
         end
     end
-end)
-
-
-
-RegisterNetEvent("sendAcePermissionToClient")
-AddEventHandler("sendAcePermissionToClient", function(state)
-    isAdmin = state
 end)
