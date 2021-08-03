@@ -30,5 +30,4 @@ PerformHttpRequest(versionurl, function(Error, NewestVersion, Header)
 			print('===================')
 		end
 		print('\n')
-	end)
 end)
