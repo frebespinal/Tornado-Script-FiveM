@@ -1,4 +1,10 @@
-resource_manifest_version '44febabe-d386-4d18-afbe-5e627f4af937'
+-- Resource Metadata
+fx_version 'cerulean'
+games { 'rdr3', 'gta5' }
+
+author 'Rhys19'
+description 'Tornado Script for fivem by rhys19'
+version '1.0.4'
 
 client_scripts {
     'helpers/GameSound.lua',
