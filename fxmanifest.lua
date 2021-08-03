@@ -25,3 +25,12 @@ server_scripts {
     'version.lua',
     'soundfx/server/main.lua'
 }
+
+ui_page('soundfx/client/html/index.html')
+
+files({
+    'soundfx/client/html/index.html',
+    -- Begin Sound Files Here...
+    -- soundfx/client/html/sounds/ ... .ogg
+    'soundfx/client/html/sounds/siren.ogg'
+})
