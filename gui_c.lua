@@ -10,12 +10,12 @@ function AddMenuTornado(menu)
     	local Item = NativeUI.CreateItem("Summon Tornado", "~o~Summons a ~r~Tornado in front of you!")
 		Item.Activated = function(ParentMenu, SelectedItem)
     		--Do stuff
-    		TriggerServerEvent("tornado:spawn", -1, x,y,z, heading)
+    		TriggerServerEvent("tornado:summon")
     	end
 		local Item2 = NativeUI.CreateItem("Delete Tornado", "~y~Deletes the tornado! ~r~(All tornados)")
 		Item2.Activated = function(ParentMenu, SelectedItem)
     		--Do stuff
-    		TriggerServerEvent("tornado:delete2")
+    		TriggerServerEvent("tornado:delete")
     	end
 		local Item3 = NativeUI.CreateItem("Exit", "")
 		Item3.Activated = function(ParentMenu, SelectedItem)
@@ -45,5 +45,10 @@ Citizen.CreateThread(function()
 end)
 
 RegisterCommand('tm', function(source, args, rawCommand)
+		if IsPlayerAceAllowed(source, "admin") then
 		mainMenu:Visible(not mainMenu:Visible())
+		else
+			return
+				TriggerEvent('chat:addMessage', { color = { 255, 0, 0}, multiline = true, args = {"^2[Tornado Script]", "^1You don't have permissions to use that command!"} })
+	end
 end)
