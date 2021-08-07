@@ -65,12 +65,12 @@ function ProcessAces()
 	
 end
 
---[[Citizen.CreateThread(function()
+Citizen.CreateThread(function()
     while true do
         ProcessAces()
         Citizen.Wait(0) -- lets check every minute
     end
-end)--]]
+end)
 AddEventHandler("onResourceStart", function(name)
     if name == GetCurrentResourceName() then
         ProcessAces()
@@ -98,46 +98,15 @@ AddEventHandler("tornado:delete", function()
 end)
 
 RegisterCommand("tornado", function(source, args, raw)
+if IsPlayerAceAllowed(source, ace_perm) then
 	if (args[1] == "summon") then
     TriggerEvent("tornado:summon")
 	elseif (args[1] == "delete") then
 	TriggerEvent("tornado:delete")
 	elseif #args < 1 then
-	return TriggerClientEvent('chat:addMessage', source, { color = { 255, 0, 0}, multiline = true, args = {"^1System", "Invalid Arguments!"} })
+	return TriggerClientEvent('chat:addMessage', source, { color = { 255, 0, 0}, multiline = true, args = {"^1System", "Usage: /tornado summon & /tornado delete"} })
 	end
-end)
-
---Update Check
-
-local LatestVersion = ''; CurrentVersion = '2.1.2'
-local GithubResourceName = 'Tornado-Script-FiveM'
-local githubUsername = 'rhys19'
-local versionurl = "https://raw.githubusercontent.com/"..githubUsername.."/"..GithubResourceName.."/master/VERSION"
-local changesurl = "https://raw.githubusercontent.com/"..githubUsername.."/"..GithubResourceName.."/master/CHANGES"
-
-PerformHttpRequest(versionurl, function(Error, NewestVersion, Header)
-	PerformHttpRequest(changesurl, function(Error, Changes, Header)
-		LatestVersion = NewestVersion
-		print('\n')
-		print('====================================================================')
-		print(' Tornado ('..GetCurrentResourceName()..')')
-		print('====================================================================')
-		print(' Current Version: ' .. CurrentVersion.. ' ')
-		print(' Newest Version: ' .. NewestVersion.. ' ')
-		print('====================================================================')
-		if CurrentVersion ~= NewestVersion then
-			print(' Outdated ')
-			print(' Check the Github for new updates! ')
-			print('====================================================================')
-			print('CHANGES:\n' .. Changes)
-		if CurrentVersion > NewestVersion then
-		print("Your version is: "..CurrentVersion.." but it's higher then the updated version! Newest Version: "..NewestVersion)
-		end
-		else
-			print('============')
-			print(' Up to date!')
-			print('============')
-		end
-		print('\n')
-	end)
+	else
+		return TriggerClientEvent('chat:addMessage', source, { color = { 255, 0, 0}, multiline = true, args = {"^1System", "You don't have permissions!"} })
+	end
 end)
