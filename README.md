@@ -1,6 +1,10 @@
 # Tornado Script for FiveM Originally by Glitch Detector Updated by Rhys19!
 Lua-based Port of @CamxxCore's https://github.com/CamxxCore/TornadoScript for FiveM
 
+<a href="https://discord.gg/WcX7cHa ">
+  <img src="http://invidget.switchblade.xyz/WcX7cHa" />
+</a>
+
 # What it does
  - Spawns like 15-20-30 feet in front of you.
  - Admin Menu for spawning and deleting the tornado!
