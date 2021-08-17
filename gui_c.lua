@@ -45,7 +45,7 @@ Citizen.CreateThread(function()
 end)
 
 RegisterCommand('tm', function(source, args, rawCommand)
-		if IsPlayerAceAllowed(source, "admin") then
+		if IsPlayerAceAllowed(source, "rhys19.tornado") then
 		mainMenu:Visible(not mainMenu:Visible())
 		else
 			return
