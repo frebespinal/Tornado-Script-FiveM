@@ -17,7 +17,8 @@ client_scripts {
     'tornado/TParticle.lua',
     'tornado/TScript.lua',
     'tornado/TVortex.lua',
-    'client.lua'
+    'client.lua',
+    'gui_c.lua'
 }
 
 server_scripts {
